@@ -1,0 +1,10 @@
+.plan{
+    width: 300px;
+    height: 500px;
+    background-color: red;
+    border-radius: 15px;
+    margin-left: 30px;
+}
+.planheading{
+    margin-bottom:10px;
+}
