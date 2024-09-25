@@ -8,6 +8,7 @@ import { htmlcontent } from '../../config/html';
 import { userexist, emailexist, phoneexist } from '../../responsemessage';
 import Joi, { string } from 'joi';
 import usersSessionHandler from '../../authHandler/middlewareauthHandler';
+import { AuthenticatedRequest } from '../../authHandler/profilehandler';
 
 
 const PostBody = Joi.object({
@@ -240,15 +241,17 @@ export class UserController {
 
 
     //getimage
-    getuserprofile = async (req: any, res: Response) => {
+    getuserprofile = async (req: AuthenticatedRequest, res: Response) => {
         try {
-            const id = req.profileid;
-            const user = await UserServices.getusersByid(id)
-            if (user) {
-                res.send(user).status(200)
-            }
-            else {
-                res.status(401).json({ message: "User not Found" })
+            if(req.profileid !== undefined){
+                const id = req.profileid
+                const user = await UserServices.getusersByid(id)
+                if (user) {
+                    res.send(user).status(200)
+                }
+                else {
+                    res.status(401).json({ message: "User not Found" })
+                }
             }
         } catch (error) {
             console.log(error)
@@ -256,13 +259,15 @@ export class UserController {
     }
 
     //update user
-    updateuser = async (req: any, res: Response) => {
+    updateuser = async (req: AuthenticatedRequest, res: Response) => {
         try {
-            const id = req.profileid;
+            if(req.profileid !== undefined){
+                const id = req.profileid;
             const { newfirstName, newlastName, newemail, newusername, newmobilephone, newimage } = req.body
             const updateduser = await UserServices.updateuser(id, newfirstName, newlastName, newemail, newusername, newmobilephone, newimage)
             if (updateduser) {
                 res.status(200).json({ message: "User updated successfully" })
+            }
             }
         } catch (error) {
             console.log(error)

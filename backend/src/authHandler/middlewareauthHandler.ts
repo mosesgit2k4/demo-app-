@@ -2,8 +2,8 @@ import {Request,Response,NextFunction} from "express"
 import {JwtPayload, verify} from "jsonwebtoken"
 import { secret_token } from "../config/dotenv";
 import User from "../model/userModel";
-
-async function usersSessionHandler(req:Request| any ,res:Response, next:NextFunction){
+import { AuthenticatedRequest } from "./profilehandler";
+async function usersSessionHandler(req: AuthenticatedRequest ,res:Response, next:NextFunction){
     const authHeader = req.headers["authorization"]
             let jwtToken
             if(authHeader!=undefined){
@@ -21,8 +21,14 @@ async function usersSessionHandler(req:Request| any ,res:Response, next:NextFunc
                     }
                     else {
                         const userdta :any= await User.findOne({where:{id:payload.userid}})
-                        req.profileid = userdta.id as number
-                        next();
+                        if(userdta){
+                            req.profileid = userdta.id as number
+                            next();
+                        }
+                        else{
+                            res.status(401).json({message:"User not found"})
+                        }
+                       
                         
                     }
                 })
