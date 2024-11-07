@@ -13,13 +13,15 @@ function Subscription(){
             console.log(data)})
     },[id])
     return(
-    <div className="plan">
-        <h3 className="planheading">Plan:{plan.name}</h3>
-        <img src={plan.image} width={200} height={200} alt="" />
-        <p>Description:{plan.description}</p>
-        <p>Started at {plan.start}</p>
-        <p>Will End at {plan.end}</p>
-    </div>
+        <div>
+            <div className="plan">
+                <h3 className="planheading">Plan:{plan.name}</h3>
+                <img src={plan.image} width={200} height={200} alt="" />
+                <p>Description:{plan.description}</p>
+                <p>Started at {plan.start}</p>
+                <p>Will End at {plan.end}</p>
+            </div>
+        </div>
     )
 }
 
